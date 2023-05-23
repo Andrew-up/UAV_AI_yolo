@@ -1,11 +1,7 @@
-import  tensorflow as tf
+import onnx
 
-def main():
-    model = tf.keras.models.load_model('runs/detect/yolov8n_custom/weights/best_saved_model')
-    print()
+from onnx_tf.backend import prepare
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-
-
-    main()
+onnx_model = onnx.load("yolov8n.onnx")  # load onnx model
+tf_rep = prepare(onnx_model)  # prepare tf representation
+tf_rep.export_graph("output_path")  # export the model
