@@ -1,7 +1,0 @@
-path: C:\myProgramm\Contest_NTI_Up_Great\train
-train: 'C:\myProgramm\Contest_NTI_Up_Great\train/images/'
-val: 'C:\myProgramm\Contest_NTI_Up_Great\train/images/'
-
-# class names
-names:
-  0: 'human'

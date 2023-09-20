@@ -8,6 +8,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+
 build_docker/
 develop-eggs/
 dist/
@@ -160,3 +161,5 @@ cython_debug/
 #.idea/
 /dataset/labels/
 /dataset/images/
+/datset
+/runs
