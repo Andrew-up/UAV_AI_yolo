@@ -5,7 +5,7 @@ from ultralytics import YOLO
 
 
 def get_video():
-    model = YOLO('runs/detect/yolov8n_custom9/weights/best.pt')
+    model = YOLO('best.pt')
 
     # image = cv2.imread('dataset/test/images/Image_013376_jpg.rf.c6d1923eb359a5da7a83f4778262b8cc.jpg')
 
@@ -14,7 +14,7 @@ def get_video():
     # cv2.imshow('img', res[0].plot())
     # cv2.waitKey(0)
     # cv2.destroyAllWindows()
-    input_video_path = 'dataset/test/video2.mp4'
+    input_video_path = 'dataset/test/video.mp4'
     prev_frame_time = 0
     cap = cv2.VideoCapture(input_video_path)
     font = cv2.FONT_HERSHEY_SIMPLEX
