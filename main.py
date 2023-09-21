@@ -1,4 +1,6 @@
-import ultralytics
+import os.path
+
+import yaml
 from ultralytics import YOLO
 
 
@@ -9,8 +11,19 @@ from ultralytics import YOLO
 
 
 def print_hi(name):
-    # pass
-    model = YOLO('yolov8n.yaml')  # build a new model from scratch
+    model_name = 'yolov8n.yaml'
+    file_model_name = 'config_model.yaml'
+    if os.path.exists(file_model_name):
+        with open(file_model_name, mode='r') as file_yaml:
+
+            listyaml = yaml.load(file_yaml, Loader=yaml.FullLoader)
+            model_name = listyaml.get('model_name')
+    else:
+        print(f'FILE NOT FOUND: {file_model_name}')
+
+    print(model_name)
+
+    model = YOLO(model_name)  # build a new model from scratch
     train_process = model.train(cfg='config_yolo.yaml', data="dataset/data.yaml")  # train the model
 
 
