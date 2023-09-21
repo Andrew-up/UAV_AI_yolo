@@ -9,10 +9,9 @@ from ultralytics import YOLO
 
 
 def print_hi(name):
+    # pass
     model = YOLO('yolov8n.yaml')  # build a new model from scratch
-
-    train_process = model.train(data="dataset/data.yaml", epochs=200, imgsz=512, name='yolov8n_custom',
-                                batch=16, amp=False)  # train the model
+    train_process = model.train(cfg='config_yolo.yaml', data="dataset/data.yaml")  # train the model
 
 
 # Press the green button in the gutter to run the script.
