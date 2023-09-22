@@ -162,6 +162,7 @@ cython_debug/
 
 #YOLO
 /config_yolo.yaml
+/config_model.yaml
 /dataset/test
 /dataset/train
 /dataset/valid
