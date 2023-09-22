@@ -168,3 +168,5 @@ cython_debug/
 /dataset/valid
 /dataset/data.yaml
 /runs
+/best.pt
+
