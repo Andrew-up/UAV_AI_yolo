@@ -169,4 +169,5 @@ cython_debug/
 /dataset/data.yaml
 /runs
 /best.pt
-
+/start_detect.sh
+/start_train.sh
