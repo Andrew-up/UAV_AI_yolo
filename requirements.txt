@@ -1,4 +1,8 @@
-
-# numpy==1.23.0
 opencv-python
 ultralytics~=8.0.105
+tensorflow==2.10.0
+onnx
+onnx2tf
+nvidia-pyindex
+protobuf==3.20.0
+sng4onnx
