@@ -6,6 +6,7 @@ from ultralytics import YOLO
 from definitions import ROOT_DIR
 
 
+
 # ultralytics.checks()
 # import torch
 #

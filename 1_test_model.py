@@ -3,6 +3,9 @@ import time
 
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+from ultralytics import YOLO
 
 from definitions import ROOT_DIR
 
@@ -147,11 +150,11 @@ def calculate_iou_for_dataset(directory):
         txt_files = sorted(
             [file.name for file in os.scandir(os.path.join(directory, 'labels')) if
              file.name.endswith('.txt') and file.is_file()],
-            reverse=False)
+            reverse=True)
         image_files = sorted(
             [file.name for file in os.scandir(os.path.join(directory, 'images')) if
              file.name.endswith('.jpg') and file.is_file()],
-            reverse=False)
+            reverse=True)
 
         if len(txt_files) == len(image_files):
             print('Number of txt_files matches the number of images_files')
@@ -164,7 +167,7 @@ def calculate_iou_for_dataset(directory):
             img_path = os.path.join(directory, 'images', image_files[index])
 
             with open(txt_file_path, mode='r') as file:
-                predictions = yolo_model(img_path, conf=0.5, iou=0.5)[0]
+                predictions = yolo_model(img_path, iou=0.5)[0]
 
                 if 'boxes' in dir(predictions):
                     result_list = predictions.boxes.xywhn.tolist()
@@ -190,7 +193,7 @@ def calculate_iou_for_dataset(directory):
                         iou_scores = []
 
                         for label in true_labels:
-                            iou = get_iou(np.array(prediction, dtype=np.float32), np.array(label, dtype=np.float32))
+                            iou = get_iou(np.array(label, dtype=np.float32), np.array(prediction, dtype=np.float32))
                             iou_scores.append(round(iou, 3))
 
                         if iou_scores:
@@ -217,18 +220,77 @@ def calculate_iou_for_dataset(directory):
         yolo_model.val()
 
 
+def draw_plot():
+    df = pd.read_excel('table.xlsx')
+
+    df = df.sort_values(by='mAP50')
+
+    # Извлечение значений столбцов
+    dataset = df['dataset']
+    time = df['time'] / 100
+    mIoU = df['mIoU']
+    mAP50 = df['mAP50']
+    mAP50_95 = df['mAP50-95']
+
+    # Создание графика
+    plt.figure(figsize=(10, 6))
+    plt.plot(dataset, time, marker='o', label='Время')
+    plt.plot(dataset, mIoU, marker='s', label='mIoU')
+    plt.plot(dataset, mAP50, marker='^', label='mAP50')
+    plt.plot(dataset, mAP50_95, marker='d', label='mAP50-95')
+
+    # Добавление подписей осей и заголовка
+    plt.xlabel('Датасеты использованные для обучения')
+    plt.ylabel('Значения')
+    plt.title('График точности распознавания')
+    plt.tight_layout()
+
+    # Добавление легенды
+    plt.legend()
+
+    # Показать график
+    plt.show()
+
+
+from PIL import Image, ImageDraw, ImageFont
+
 if __name__ == '__main__':
+
+    draw_plot()
     # import numpy as np
-    # ground_truth_bbox = np.array([1202, 123, 1650, 868], dtype=np.float32)
-    # prediction_bbox = np.array([1162.0001, 92.0021, 1619.9832, 694.0033], dtype=np.float32)
+
+    # print(np.mean([0.606, 0.105, 0.0]))
+    # image = Image.new("RGB", (1920, 1080), (255, 255, 255))
+    # draw = ImageDraw.Draw(image)
+    # ground_truth_bbox = np.array([50, 50, 500, 500], dtype=np.float32)
+    # prediction_bbox = np.array([100, 100, 600, 600], dtype=np.float32)
     # iou = get_iou(ground_truth_bbox, prediction_bbox)
+    # rectangle1 = ground_truth_bbox.tolist()
+    # rectangle2 = prediction_bbox.tolist()
+    # font = ImageFont.truetype('arial.ttf', 20)
+    # draw.text((rectangle1[0], rectangle1[1]-22), 'x11 y11', font=font, fill=(0, 0, 0))
+    # draw.text((rectangle1[2]-60, rectangle1[3]), 'x12 y12', font=font, fill=(0, 0, 0))
+    #
+    # draw.text((rectangle2[0], rectangle2[1]-22), 'x21 y21', font=font, fill=(0, 0, 0))
+    # draw.text((rectangle2[2]-60, rectangle2[3]), 'x22 y22', font=font, fill=(0, 0, 0))
+    #
+    #
+    # draw.rectangle(rectangle1, outline="red", width=3)
+    # draw.rectangle(rectangle2, outline="blue", width=3)
+    # image.save("rectangles.png")
+    # image.show()
+
     # print('IOU: ', iou)
     #
 
     # aaaaa = [[1.4444, 2.22222, 31.2222222, 4.00000444444], [13, 33, 3, 34]]
     # aaaaa = [[round(num, 3) for num in sublist] for sublist in aaaaa]
     # print(aaaaa)
-    p = os.path.join(ROOT_DIR, 'dataset', 'test')
-    calculate_iou_for_dataset(p)
-#     get_video()
+
+
+    # p = os.path.join(ROOT_DIR, 'dataset', 'test')
+    # calculate_iou_for_dataset(p)
+
+
+    get_video()
 #     main()
